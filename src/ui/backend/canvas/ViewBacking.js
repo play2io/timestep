@@ -22,9 +22,6 @@
 
 import ..strPad;
 import ..BaseBacking;
-import util.setProperty as setProperty;
-
-var _styleKeys = {};
 
 var ViewBacking = exports = Class(BaseBacking, function () {
 
