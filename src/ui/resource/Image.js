@@ -189,14 +189,23 @@ exports = Class(lib.PubSub, function () {
 				cb = cb.chain();
 			}
 
+			var hasFired = this._cb.fired();
+
 			// GC native has a reload method to force reload
 			if (srcImg.reload) {
 				var onReload = bind(this, function () {
 					srcImg.removeEventListener('reload', onReload, false);
+					if (hasFired) {
+						this._cb.fire(null, this);
+					}
 					cb && cb();
 				});
 				srcImg.addEventListener('reload', onReload, false);
 				srcImg.reload();
+
+				if (hasFired) {
+					this._cb.reset();
+				}
 			} else if (cb) {
 				if (this._cb.fired()) {
 					// always wait a frame before calling the callback
@@ -415,6 +424,7 @@ exports = Class(lib.PubSub, function () {
 			}
 		}
 
+		if (this._isError) { return; }
 		ctx.drawImage(srcImg, srcX, srcY, srcW, srcH, destX, destY, destW, destH);
 	};
 
@@ -452,3 +462,4 @@ exports = Class(lib.PubSub, function () {
 exports.__clearCache__ = function () {
   ImageCache = {};
 };
+
