@@ -198,6 +198,8 @@ exports = GridView = Class(View, function (supr) {
   this.addSubview = function (view) {
     supr(this, "addSubview", [view]);
     this.needsReflow();
+    //[play2io]
+    this.reflow();
   };
 
   this.getRows = function () {
